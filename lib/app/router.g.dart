@@ -6,13 +6,13 @@ part of 'router.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routerHash() => r'2352bd27079aea72063b57cf10daf0ce73e08003';
+String _$routerHash() => r'f5037b1a0728226df7442165c68911b9035933c9';
 
 /// Provides the [GoRouter] instance used by [MaterialApp.router].
 ///
 /// Routes:
-///   - `/`              → Location list screen  (placeholder for now)
-///   - `/location/:id`  → Location detail screen (placeholder for now)
+///   - `/`              → Location list screen
+///   - `/location/:id`  → Location detail screen
 ///
 /// Copied from [router].
 @ProviderFor(router)
