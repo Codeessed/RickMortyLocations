@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../shared/widgets/error_view.dart';
+import '../../../../shared/widgets/loading_view.dart';
 import '../providers/location_detail_provider.dart';
 import '../widgets/resident_grid.dart';
 
@@ -18,36 +20,46 @@ class LocationDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       body: asyncDetail.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: AppColors.portalGreen),
-        ),
-        error: (error, _) => Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.error_outline_rounded,
-                  color: AppColors.error,
-                  size: 48,
+        loading: () => CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 160,
+              pinned: true,
+              backgroundColor: AppColors.darkBackground,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        AppColors.portalGreen.withValues(alpha: 0.3),
+                        AppColors.darkBackground,
+                      ],
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  error.toString(),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.textSecondary),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  onPressed: () =>
-                      ref.refresh(locationDetailProvider(locationId)),
-                  icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Retry'),
-                ),
-              ],
+              ),
             ),
-          ),
+            const SliverFillRemaining(
+              child: LoadingView(itemCount: 3),
+            ),
+          ],
+        ),
+        error: (error, _) => CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              pinned: true,
+              backgroundColor: AppColors.darkBackground,
+            ),
+            SliverFillRemaining(
+              child: ErrorView(
+                message: error.toString(),
+                onRetry: () =>
+                    ref.invalidate(locationDetailProvider(locationId)),
+              ),
+            ),
+          ],
         ),
         data: (detail) {
           final location = detail.location;
@@ -96,7 +108,8 @@ class LocationDetailScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _InfoRow(label: 'Type', value: location.type),
-                      _InfoRow(label: 'Dimension', value: location.dimension),
+                      _InfoRow(
+                          label: 'Dimension', value: location.dimension),
                       _InfoRow(
                         label: 'Created',
                         value: _formatDate(location.created),
