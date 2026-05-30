@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:rick_morty_flutter/features/locations/domain/entities/location.dart';
-import 'package:rick_morty_flutter/features/locations/domain/repositories/location_repository.dart';
-import 'package:rick_morty_flutter/features/locations/presentation/providers/location_providers.dart';
 import 'package:rick_morty_flutter/features/locations/presentation/widgets/location_card.dart';
 
 void main() {

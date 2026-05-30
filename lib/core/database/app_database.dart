@@ -7,17 +7,18 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'daos/character_dao.dart';
+import 'daos/location_dao.dart';
+import 'tables/cached_characters_table.dart';
+import 'tables/cached_locations_table.dart';
+
 part 'app_database.g.dart';
 
-// ── Tables ─────────────────────────────────────────────────────────────
-// Tables will be added here as features are built (Task 4).
-// For now, this file scaffolds the Drift database so code-gen is verified.
-
 /// The central Drift database for the Rick & Morty app.
-///
-/// Tables and DAOs will be registered here as features are implemented.
-/// Currently scaffolded as an empty database to validate the code-gen pipeline.
-@DriftDatabase(tables: [])
+@DriftDatabase(
+  tables: [CachedLocations, CachedCharacters],
+  daos: [LocationDao, CharacterDao],
+)
 class AppDatabase extends _$AppDatabase {
   /// Production constructor — uses a file-backed SQLite database.
   AppDatabase() : super(_openConnection());
@@ -41,3 +42,12 @@ LazyDatabase _openConnection() {
 /// Riverpod provider that exposes the singleton [AppDatabase] instance.
 @Riverpod(keepAlive: true)
 AppDatabase appDatabase(Ref ref) => AppDatabase();
+
+/// Provides the [LocationDao] from the database.
+@Riverpod(keepAlive: true)
+LocationDao locationDao(Ref ref) => ref.watch(appDatabaseProvider).locationDao;
+
+/// Provides the [CharacterDao] from the database.
+@Riverpod(keepAlive: true)
+CharacterDao characterDao(Ref ref) =>
+    ref.watch(appDatabaseProvider).characterDao;

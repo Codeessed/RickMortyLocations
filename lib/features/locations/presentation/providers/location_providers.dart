@@ -1,11 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/database/app_database.dart';
 import '../../../../core/network/dio_client.dart';
 import '../../data/datasources/location_remote_datasource.dart';
 import '../../data/repositories/location_repository_impl.dart';
 import '../../domain/entities/location.dart';
-import '../../domain/repositories/location_repository.dart';
+import 'search_filter_provider.dart';
 
 part 'location_providers.g.dart';
 
@@ -17,12 +18,29 @@ LocationRemoteDataSource locationRemoteDataSource(Ref ref) {
   return LocationRemoteDataSource(ref.watch(dioProvider));
 }
 
-/// Provides the repository implementation.
+/// Provides the repository implementation with caching.
 @Riverpod(keepAlive: true)
-LocationRepository locationRepository(Ref ref) {
+LocationRepositoryImpl locationRepository(Ref ref) {
   return LocationRepositoryImpl(
     remote: ref.watch(locationRemoteDataSourceProvider),
+    locationDao: ref.watch(locationDaoProvider),
+    characterDao: ref.watch(characterDaoProvider),
   );
+}
+
+/// Provides the last-cached-at timestamp as a reactive stream.
+@riverpod
+Stream<DateTime?> lastCachedAt(Ref ref) {
+  // Re-emit when the repository changes cache
+  final repo = ref.watch(locationRepositoryProvider);
+  return Stream.fromFuture(repo.getLastCachedAt());
+}
+
+/// Provides distinct location types for the filter dropdown.
+@riverpod
+Stream<List<String>> locationTypes(Ref ref) {
+  final repo = ref.watch(locationRepositoryProvider);
+  return repo.watchDistinctTypes();
 }
 
 // ── Location List State ────────────────────────────────────────────────
@@ -57,11 +75,20 @@ class LocationListState {
 }
 
 /// Manages the paginated location list with infinite scroll support.
+///
+/// Reacts to [SearchFilterNotifier] changes — when filters change,
+/// the list is re-fetched from page 1 with both name and type params.
 @riverpod
 class LocationListNotifier extends _$LocationListNotifier {
   @override
   Future<LocationListState> build() async {
-    return _fetchPage(1);
+    // Watch the filter state — whenever it changes, this provider rebuilds
+    final filters = ref.watch(searchFilterNotifierProvider);
+    return _fetchPage(
+      1,
+      name: filters.name,
+      type: filters.type,
+    );
   }
 
   /// Loads the next page of locations. No-op if already loading or
@@ -78,10 +105,13 @@ class LocationListNotifier extends _$LocationListNotifier {
     state = AsyncData(currentState.copyWith(isLoadingMore: true));
 
     try {
+      final filters = ref.read(searchFilterNotifierProvider);
       final nextPage = currentState.currentPage + 1;
-      final page = await ref
-          .read(locationRepositoryProvider)
-          .getLocations(page: nextPage);
+      final page = await ref.read(locationRepositoryProvider).getLocations(
+            page: nextPage,
+            name: filters.name.isNotEmpty ? filters.name : null,
+            type: filters.type.isNotEmpty ? filters.type : null,
+          );
 
       state = AsyncData(
         currentState.copyWith(
@@ -91,18 +121,22 @@ class LocationListNotifier extends _$LocationListNotifier {
           isLoadingMore: false,
         ),
       );
-    } catch (e) {
+    } catch (_) {
       // Pagination error: keep existing data, just stop loading indicator
       state = AsyncData(currentState.copyWith(isLoadingMore: false));
-      // Re-throw so the UI can show a snackbar
-      rethrow;
     }
   }
 
-  Future<LocationListState> _fetchPage(int page) async {
-    final result = await ref
-        .read(locationRepositoryProvider)
-        .getLocations(page: page);
+  Future<LocationListState> _fetchPage(
+    int page, {
+    String? name,
+    String? type,
+  }) async {
+    final result = await ref.read(locationRepositoryProvider).getLocations(
+          page: page,
+          name: name?.isNotEmpty == true ? name : null,
+          type: type?.isNotEmpty == true ? type : null,
+        );
 
     return LocationListState(
       locations: result.locations,
