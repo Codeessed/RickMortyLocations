@@ -43,6 +43,12 @@ class LocationDao extends DatabaseAccessor<AppDatabase>
     return (select(cachedLocations)..where((t) => t.page.equals(page))).get();
   }
 
+  /// Returns a single cached location by [id], or `null` if not cached.
+  Future<CachedLocation?> getLocationById(int id) {
+    return (select(cachedLocations)..where((t) => t.id.equals(id)))
+        .getSingleOrNull();
+  }
+
   /// Upserts a batch of locations into the cache.
   Future<void> upsertLocations(List<CachedLocationsCompanion> rows) async {
     await batch((b) {

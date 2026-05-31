@@ -113,6 +113,23 @@ class LocationRepositoryImpl implements LocationRepository {
 
   @override
   Future<Location> getLocationById(int id) async {
+    // 1. Check cache
+    final cached = await _locationDao.getLocationById(id);
+    final hasCachedData = cached != null;
+
+    // 2. Determine staleness
+    bool isStale = true;
+    if (hasCachedData) {
+      isStale = DateTime.now().difference(cached.cachedAt) >
+          AppConstants.cacheTtl;
+    }
+
+    // 3. If cache is fresh, return it immediately
+    if (hasCachedData && !isStale) {
+      return _cachedLocationToEntity(cached);
+    }
+
+    // 4. Fetch from network
     try {
       final model = await _remote.getLocationById(id);
 
@@ -134,6 +151,11 @@ class LocationRepositoryImpl implements LocationRepository {
 
       return model.toEntity();
     } catch (e) {
+      // 5. On error with cache: return stale data
+      if (hasCachedData) {
+        return _cachedLocationToEntity(cached);
+      }
+      // 6. On error without cache: throw
       if (e is AppException) rethrow;
       throw UnknownException(cause: e);
     }
