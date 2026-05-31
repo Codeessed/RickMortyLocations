@@ -17,9 +17,9 @@
 
 ## 📱 Screenshots
 
-| Android | iOS | macOS |
+| _Android_ | _iOS_ | _macOS_ |
 |---------|-----|-------|
-| _Coming soon_ | _Coming soon_ | ![macOS Desktop List](screenshots/macos_list.png) |
+| ![Android Locations List](screenshots/android_list.jpeg) | ![iOS Locations List](screenshots/ios_list.jpeg) | ![macOS Desktop List](screenshots/macos_list.png) |
 
 ---
 
@@ -316,6 +316,38 @@ flutter analyze
 
 ---
 
+## 🤖 Android Screenshots
+
+**Locations List — single-column list with search bar, last-updated banner and type filter chips:**
+
+![Android Locations List](screenshots/android_list.jpeg)
+
+**Location Detail — full-screen detail view with info rows and a 3×2 resident grid:**
+
+![Android Location Detail — Earth (C-137)](screenshots/android_detail.jpeg)
+
+**Empty State — no results for search "m" + Cluster type filter:**
+
+![Android Empty State](screenshots/android_empty.jpeg)
+
+---
+
+## 📱 iOS Screenshots
+
+**Locations List — single-column list with search bar, last-updated banner and type filter chips:**
+
+![iOS Locations List](screenshots/ios_list.jpeg)
+
+**Location Detail — scrollable detail view with info rows and a 3×2 resident grid:**
+
+![iOS Location Detail — Earth (C-137)](screenshots/ios_detail.jpeg)
+
+**Search & Filter — combined name search "na" + Dimension type filter active:**
+
+![iOS Search & Filter](screenshots/ios_list_filtered.jpeg)
+
+---
+
 ## 📐 Desktop Support
 
 The app is fully functional on **macOS** with an adaptive layout:
@@ -329,7 +361,19 @@ The app is fully functional on **macOS** with an adaptive layout:
 ### macOS Desktop App
 Here is the desktop application running natively on macOS with the adaptive master-detail layout:
 
-![macOS Desktop Master-Detail Layout](screenshots/macos_detail.png)
+**Locations List — 3-column grid with NavigationRail and type filter chips:**
+
+![macOS Locations List](screenshots/macos_list.png)
+
+**Search & Filter — combined name search + type filter in action:**
+
+![macOS Search & Filter](screenshots/macos_list_filtered.png)
+
+**Location Detail — two-pane layout with location info and resident grid:**
+
+![macOS Location Detail — Earth (C-137)](screenshots/macos_detail.png)
+
+![macOS Location Detail — Abadango](screenshots/macos_list_2.png)
 
 ---
 

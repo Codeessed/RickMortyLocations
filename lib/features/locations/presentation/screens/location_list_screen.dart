@@ -159,16 +159,20 @@ class _LocationListScreenState extends ConsumerState<LocationListScreen> {
           Expanded(
             child: asyncState.when(
               loading: () => const LoadingView(),
-              error: (error, _) => ErrorView(
-                message: error.toString(),
-                onRetry: () => ref.invalidate(locationListNotifierProvider),
+              error: (error, _) => SingleChildScrollView(
+                child: ErrorView(
+                  message: error.toString(),
+                  onRetry: () => ref.invalidate(locationListNotifierProvider),
+                ),
               ),
               data: (state) {
                 if (state.locations.isEmpty) {
-                  return const EmptyView(
-                    icon: Icons.search_off_rounded,
-                    title: 'No locations found',
-                    subtitle: 'Try a different search or filter',
+                  return SingleChildScrollView(
+                    child: EmptyView(
+                      icon: Icons.search_off_rounded,
+                      title: 'No locations found',
+                      subtitle: 'Try a different search or filter',
+                    ),
                   );
                 }
 
@@ -197,7 +201,7 @@ class _LocationListScreenState extends ConsumerState<LocationListScreen> {
                       state: state,
                       onTap: (loc) {
                         ScaffoldMessenger.of(context).clearSnackBars();
-                        context.go('/location/${loc.id}');
+                        context.push('/location/${loc.id}');
                       },
                     ),
                     // ── Desktop: 3-column grid ─────────────────────
@@ -208,7 +212,7 @@ class _LocationListScreenState extends ConsumerState<LocationListScreen> {
                       state: state,
                       onTap: (loc) {
                         ScaffoldMessenger.of(context).clearSnackBars();
-                        context.go('/location/${loc.id}');
+                        context.push('/location/${loc.id}');
                       },
                     ),
                   ),
@@ -239,7 +243,7 @@ class _LocationListScreenState extends ConsumerState<LocationListScreen> {
       location: location,
       onTap: () {
         ScaffoldMessenger.of(context).clearSnackBars();
-        context.go('/location/${location.id}');
+        context.push('/location/${location.id}');
       },
     );
   }
