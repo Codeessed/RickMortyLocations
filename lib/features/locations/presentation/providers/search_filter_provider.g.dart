@@ -7,7 +7,7 @@ part of 'search_filter_provider.dart';
 // **************************************************************************
 
 String _$searchFilterNotifierHash() =>
-    r'420929d15159c07a6a046ed6d780aca1dfd28534';
+    r'578347203767f385bb12b1560d21b5f66b19ef09';
 
 /// Manages the search name + type filter state.
 ///
@@ -17,10 +17,7 @@ String _$searchFilterNotifierHash() =>
 /// Copied from [SearchFilterNotifier].
 @ProviderFor(SearchFilterNotifier)
 final searchFilterNotifierProvider =
-    AutoDisposeNotifierProvider<
-      SearchFilterNotifier,
-      SearchFilterState
-    >.internal(
+    NotifierProvider<SearchFilterNotifier, SearchFilterState>.internal(
       SearchFilterNotifier.new,
       name: r'searchFilterNotifierProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -30,6 +27,6 @@ final searchFilterNotifierProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$SearchFilterNotifier = AutoDisposeNotifier<SearchFilterState>;
+typedef _$SearchFilterNotifier = Notifier<SearchFilterState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

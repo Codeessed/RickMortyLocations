@@ -6,13 +6,17 @@ part of 'router.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routerHash() => r'f5037b1a0728226df7442165c68911b9035933c9';
+String _$routerHash() => r'0e67699a02944733020123977729e4d2ec9e9f0e';
 
 /// Provides the [GoRouter] instance used by [MaterialApp.router].
 ///
-/// Routes:
+/// Routes (all wrapped by [AppShell] via [ShellRoute]):
 ///   - `/`              → Location list screen
 ///   - `/location/:id`  → Location detail screen
+///
+/// The [ShellRoute] renders [AppShell] as a persistent parent so that
+/// the desktop [NavigationRail] survives route transitions without
+/// being rebuilt.
 ///
 /// Copied from [router].
 @ProviderFor(router)

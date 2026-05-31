@@ -66,13 +66,13 @@ final lastCachedAtProvider = AutoDisposeStreamProvider<DateTime?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LastCachedAtRef = AutoDisposeStreamProviderRef<DateTime?>;
-String _$locationTypesHash() => r'18107eeb7f9b892d37972c467a9755aef3b66f99';
+String _$locationTypesHash() => r'4532ebd9faae440e8acfc45037e758e358f09541';
 
 /// Provides distinct location types for the filter dropdown.
 ///
 /// Copied from [locationTypes].
 @ProviderFor(locationTypes)
-final locationTypesProvider = AutoDisposeStreamProvider<List<String>>.internal(
+final locationTypesProvider = StreamProvider<List<String>>.internal(
   locationTypes,
   name: r'locationTypesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -84,9 +84,9 @@ final locationTypesProvider = AutoDisposeStreamProvider<List<String>>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef LocationTypesRef = AutoDisposeStreamProviderRef<List<String>>;
+typedef LocationTypesRef = StreamProviderRef<List<String>>;
 String _$locationListNotifierHash() =>
-    r'6cc04b5e86c0b52c8897bdafbd67a5d5fd197bf3';
+    r'8cfb4ec1a3fb38194e8028de20cfcb985d8c0ca4';
 
 /// Manages the paginated location list with infinite scroll support.
 ///
@@ -96,10 +96,7 @@ String _$locationListNotifierHash() =>
 /// Copied from [LocationListNotifier].
 @ProviderFor(LocationListNotifier)
 final locationListNotifierProvider =
-    AutoDisposeAsyncNotifierProvider<
-      LocationListNotifier,
-      LocationListState
-    >.internal(
+    AsyncNotifierProvider<LocationListNotifier, LocationListState>.internal(
       LocationListNotifier.new,
       name: r'locationListNotifierProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -109,6 +106,6 @@ final locationListNotifierProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$LocationListNotifier = AutoDisposeAsyncNotifier<LocationListState>;
+typedef _$LocationListNotifier = AsyncNotifier<LocationListState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

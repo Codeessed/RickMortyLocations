@@ -69,6 +69,7 @@ class LocationDao extends DatabaseAccessor<AppDatabase>
   Stream<List<String>> watchDistinctTypes() {
     final query = selectOnly(cachedLocations, distinct: true)
       ..addColumns([cachedLocations.type])
+      ..where(cachedLocations.type.length.isBiggerThanValue(0))
       ..orderBy([OrderingTerm.asc(cachedLocations.type)]);
     return query
         .map((row) => row.read(cachedLocations.type)!)

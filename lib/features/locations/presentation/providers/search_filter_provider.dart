@@ -33,7 +33,7 @@ class SearchFilterState {
 ///
 /// Both filters work together — the list provider reacts to changes
 /// and re-fetches with both parameters in a single API request.
-@riverpod
+@Riverpod(keepAlive: true)
 class SearchFilterNotifier extends _$SearchFilterNotifier {
   @override
   SearchFilterState build() => const SearchFilterState();

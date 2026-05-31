@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
 
 import '../../../../core/constants/app_constants.dart';
@@ -97,6 +98,16 @@ class LocationRepositoryImpl implements LocationRepository {
         currentPage: page,
       );
     } catch (e) {
+      // The Rick & Morty API returns 404 when no results match
+      // a search/filter query. Treat this as an empty result set.
+      if (_isNotFoundException(e)) {
+        return LocationPage(
+          locations: [],
+          hasNextPage: false,
+          currentPage: page,
+        );
+      }
+
       // 5. On error with cache: return stale cache
       if (hasCachedData && _isUnfilteredRequest(name, type)) {
         return LocationPage(
@@ -252,6 +263,14 @@ class LocationRepositoryImpl implements LocationRepository {
 
   bool _isUnfilteredRequest(String? name, String? type) =>
       (name == null || name.isEmpty) && (type == null || type.isEmpty);
+
+  /// Returns `true` if the error is a [NotFoundException], either thrown
+  /// directly or wrapped inside a [DioException] by the API interceptor.
+  bool _isNotFoundException(Object e) {
+    if (e is NotFoundException) return true;
+    if (e is DioException && e.error is NotFoundException) return true;
+    return false;
+  }
 
   Location _cachedLocationToEntity(CachedLocation row) => Location(
         id: row.id,
