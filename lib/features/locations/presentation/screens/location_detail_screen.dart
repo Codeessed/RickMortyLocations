@@ -73,6 +73,11 @@ class _MobileDetailView extends StatelessWidget {
               expandedHeight: 160,
               pinned: true,
               backgroundColor: AppColors.darkBackground,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
+                tooltip: 'Back',
+                onPressed: () => context.pop(),
+              ),
               flexibleSpace: FlexibleSpaceBar(
                 background: _GradientHeader(expanded: true),
               ),
@@ -85,6 +90,11 @@ class _MobileDetailView extends StatelessWidget {
             SliverAppBar(
               pinned: true,
               backgroundColor: AppColors.darkBackground,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
+                tooltip: 'Back',
+                onPressed: () => context.pop(),
+              ),
             ),
             SliverFillRemaining(
               child: ErrorView(message: error.toString(), onRetry: onRetry),
@@ -99,6 +109,17 @@ class _MobileDetailView extends StatelessWidget {
                 expandedHeight: 160,
                 pinned: true,
                 backgroundColor: AppColors.darkBackground,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
+                  tooltip: 'Back',
+                  onPressed: () {
+                    if (context.canPop()) {
+                      context.pop();
+                    } else {
+                      context.go('/');
+                    }
+                  },
+                ),
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(
                     location.name,
@@ -171,13 +192,7 @@ class _DesktopDetailView extends StatelessWidget {
                           child: IconButton(
                             icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
                             tooltip: 'Back',
-                            onPressed: () {
-                              if (context.canPop()) {
-                                context.pop();
-                              } else {
-                                context.go('/');
-                              }
-                            },
+                            onPressed: () => context.pop(),
                           ),
                         ),
                       ],
