@@ -17,11 +17,9 @@
 
 ## 📱 Screenshots
 
-> _Screenshots will be added here after Task 8 (Desktop Support) is complete._
-
 | Android | iOS | macOS |
 |---------|-----|-------|
-| _Coming soon_ | _Coming soon_ | _Coming soon_ |
+| _Coming soon_ | _Coming soon_ | ![macOS Desktop List](screenshots/macos_list.png) |
 
 ---
 
@@ -328,7 +326,10 @@ The app is fully functional on **macOS** with an adaptive layout:
 | 600–899px | 2-column grid |
 | ≥ 900px | Two-pane: `NavigationRail` + master–detail |
 
-> Screenshots of the macOS build will be added to this section after Task 8 is complete.
+### macOS Desktop App
+Here is the desktop application running natively on macOS with the adaptive master-detail layout:
+
+![macOS Desktop Master-Detail Layout](screenshots/macos_detail.png)
 
 ---
 
