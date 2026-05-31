@@ -19,10 +19,10 @@ class LastUpdatedBanner extends StatelessWidget {
     final label = _formatDuration(ago);
 
     return Container(
-      width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       color: AppColors.darkSurface,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(

@@ -23,6 +23,12 @@ class _SearchFilterBarState extends ConsumerState<SearchFilterBar> {
   Timer? _debounce;
 
   @override
+  void initState() {
+    super.initState();
+    _searchController.text = ref.read(searchFilterNotifierProvider).name;
+  }
+
+  @override
   void dispose() {
     _debounce?.cancel();
     _searchController.dispose();
@@ -56,7 +62,7 @@ class _SearchFilterBarState extends ConsumerState<SearchFilterBar> {
                 Icons.search_rounded,
                 color: AppColors.textMuted,
               ),
-              suffixIcon: filters.hasActiveFilters
+              suffixIcon: filters.name.isNotEmpty
                   ? IconButton(
                       icon: const Icon(
                         Icons.clear_rounded,
@@ -66,7 +72,7 @@ class _SearchFilterBarState extends ConsumerState<SearchFilterBar> {
                         _searchController.clear();
                         ref
                             .read(searchFilterNotifierProvider.notifier)
-                            .reset();
+                            .setName('');
                       },
                     )
                   : null,

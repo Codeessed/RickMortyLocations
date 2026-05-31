@@ -37,7 +37,7 @@ Stream<DateTime?> lastCachedAt(Ref ref) {
 }
 
 /// Provides distinct location types for the filter dropdown.
-@riverpod
+@Riverpod(keepAlive: true)
 Stream<List<String>> locationTypes(Ref ref) {
   final repo = ref.watch(locationRepositoryProvider);
   return repo.watchDistinctTypes();
@@ -78,7 +78,7 @@ class LocationListState {
 ///
 /// Reacts to [SearchFilterNotifier] changes — when filters change,
 /// the list is re-fetched from page 1 with both name and type params.
-@riverpod
+@Riverpod(keepAlive: true)
 class LocationListNotifier extends _$LocationListNotifier {
   @override
   Future<LocationListState> build() async {
